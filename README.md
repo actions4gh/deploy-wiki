@@ -30,7 +30,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: tj-actions/links-strip-ext@v1
+        with:
+          path: wiki
       - uses: tj-actions/upload-wiki@v1
+        with:
+          path: wiki
 ```
 
 ☝ This workflow will publish the `wiki/` folder from your GitHub repository to
