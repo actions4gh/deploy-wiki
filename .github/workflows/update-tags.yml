@@ -1,5 +1,3 @@
-# Copyright 2023 Jacob Hummer
-# SPDX-License-Identifier: Apache-2.0
 name: Update tags
 on:
   release:

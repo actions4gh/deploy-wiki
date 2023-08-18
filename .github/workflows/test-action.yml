@@ -1,11 +1,8 @@
-# Copyright 2023 Jacob Hummer
-# SPDX-License-Identifier: Apache-2.0
 name: Test action
 on:
   push:
-    branches: "master"
+    branches: "main"
     paths-ignore:
-      - .gitignore
       - .gitattributes
       - LICENSE
       - README.md
@@ -13,17 +10,16 @@ on:
       - "!.github/workflows/test-action.yml"
   pull_request:
     paths-ignore:
-      - .gitignore
       - .gitattributes
       - LICENSE
       - README.md
       - .github/**
       - "!.github/workflows/test-action.yml"
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  test-action-clone-dry-run:
+  dry-run:
     strategy:
       fail-fast: false
       matrix:
@@ -33,22 +29,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         with:
-          strategy: clone
           dry-run: true
-  test-action-init-dry-run:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./
-        with:
-          strategy: init
-          dry-run: true
-  test-action-real:
-    concurrency: ${{ github.workflow }}-real
+  real:
+    concurrency: ${{ github.ref }}-write
     permissions:
       contents: write
     runs-on: ubuntu-latest
