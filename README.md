@@ -56,7 +56,6 @@ jobs:
         with:
           token: ${{ secrets.MEGA_PROJECT_GITHUB_TOKEN }}
           repository: octocat/mega-project
-          path: .
 ```
 
 ℹ You will need a GitHub access token with permission to write to the target
@@ -86,8 +85,7 @@ TODO: Fill this out
 ### Outputs
 
 - **`wiki_url`:** The HTTP URL that points to the deployed repository's wiki
-  tab. This is essentially the concatenation of `${{ github.server_url }}`,
-  `${{ github.repository }}`, and the `/wiki` page.
+  tab. Example: `https://github.com/tj-actions/upload-wiki/wiki`
 
 <!-- prettier-ignore-start -->
 [gollum]: https://github.com/gollum/gollum
