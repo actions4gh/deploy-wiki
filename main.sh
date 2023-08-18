@@ -14,8 +14,8 @@ export GH_HOST="${GITHUB_SERVER_URL#*//}"
 gh auth setup-git
 git config --global --add safe.directory "$GIT_DIR"
 
-git init -b master
-git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.wiki.git"
+git clone "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.wiki.git" "$GIT_DIR" --bare
+git config --unset core.bare
 
 echo "$INPUT_IGNORE" >>"$GIT_DIR/info/exclude"
 git add -Av
