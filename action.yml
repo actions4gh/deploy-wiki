@@ -16,8 +16,6 @@ inputs:
     default: ""
   commit-message:
     default: Update wiki
-  dry-run:
-    default: false
 outputs:
   wiki_url:
     value: ${{ steps.main.outputs.wiki_url }}
