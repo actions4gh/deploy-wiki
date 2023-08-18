@@ -19,18 +19,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  dry-run:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./
-        with:
-          dry-run: true
-  real:
+  test-action:
     concurrency: ${{ github.ref }}-write
     permissions:
       contents: write
