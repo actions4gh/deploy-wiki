@@ -22,12 +22,6 @@ name: Publish wiki
 on:
   push:
     branches: "main"
-    paths:
-      - wiki/**
-      - .github/workflows/publish-wiki.yml
-concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: true
 jobs:
   publish-wiki:
     permissions:
