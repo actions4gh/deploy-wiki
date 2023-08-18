@@ -11,9 +11,9 @@ inputs:
   token:
     default: ${{ github.token }}
   path:
-    default: wiki
-  ignore:
-    default: ""
+    required: true
+  if-no-files-found:
+    default: warn
   commit-message:
     default: Update wiki
 outputs:
@@ -26,11 +26,9 @@ runs:
       shell: bash
       run: '"$GITHUB_ACTION_PATH/main.sh"'
       env:
-        INPUT_STRATEGY: ${{ inputs.strategy }}
-        INPUT_REPOSITORY: ${{ inputs.repository }}
         INPUT_GITHUB_SERVER_URL: ${{ inputs.github-server-url }}
+        INPUT_REPOSITORY: ${{ inputs.repository }}
         INPUT_TOKEN: ${{ inputs.token }}
         INPUT_PATH: ${{ inputs.path }}
+        INPUT_IF_NO_FILES_FOUND: ${{ inputs.if-no-files-found }}
         INPUT_COMMIT_MESSAGE: ${{ inputs.commit-message }}
-        INPUT_IGNORE: ${{ inputs.ignore }}
-        INPUT_DRY_RUN: ${{ inputs.dry-run }}
