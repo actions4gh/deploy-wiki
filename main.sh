@@ -24,13 +24,6 @@ git config user.name github-actions[bot]
 git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
 git commit --allow-empty -m "$INPUT_COMMIT_MESSAGE"
-
-if [[ $INPUT_DRY_RUN == true ]]; then
-  echo 'Dry run'
-  git remote show origin
-  git show
-else
-  git push -f origin master
-fi
+git push -f origin master
 
 echo "wiki_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/wiki" >>"$GITHUB_OUTPUT"
