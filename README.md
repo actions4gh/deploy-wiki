@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: tj-actions/transform-links/strip-ext@v1
+      - uses: tj-actions/links-strip-ext@v1
       - uses: tj-actions/upload-wiki@v1
 ```
 
