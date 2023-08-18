@@ -12,14 +12,13 @@ gh auth setup-git
 tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
 git config --global --add safe.directory "$tmp_dir"
-
 git clone "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.wiki.git" "$tmp_dir"
-echo "$INPUT_IGNORE" >>"$tmp_dir/.git/info/exclude"
-
-rsync -av --exclude=.git "${INPUT_PATH}/" "$tmp_dir/"
+rsync -avI --exclude=.git "${INPUT_PATH}/" "$tmp_dir/"
+pushd "$tmp_dir"
 
 git config user.name github-actions[bot]
 git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+echo "$INPUT_IGNORE" >>.git/info/exclude
 git add -Av
 git commit --allow-empty -m "$INPUT_COMMIT_MESSAGE"
 git push -f origin master
