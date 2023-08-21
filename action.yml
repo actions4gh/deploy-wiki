@@ -1,24 +1,26 @@
-name: GitHub Wiki Action
-description: 📖 Deploy docs from your source tree to the GitHub wiki
+name: Upload wiki
+description: 📥 Upload your GitHub wiki
+
 branding:
   icon: upload-cloud
   color: blue
+
 inputs:
-  github-server-url:
+  server-url:
     default: ${{ github.server_url }}
   repository:
     default: ${{ github.repository }}
   token:
     default: ${{ github.token }}
   path:
-    required: true
-  if-no-files-found:
-    default: warn
-  commit-message:
-    default: Update wiki
+    default: .
+  delete:
+    default: true
+
 outputs:
-  wiki_url:
-    value: ${{ steps.main.outputs.wiki_url }}
+  wiki-git-url:
+    value: ${{ steps.main.outputs.wiki-git-url }}
+
 runs:
   using: composite
   steps:
@@ -26,9 +28,8 @@ runs:
       shell: bash
       run: '"$GITHUB_ACTION_PATH/main.sh"'
       env:
-        INPUT_GITHUB_SERVER_URL: ${{ inputs.github-server-url }}
+        INPUT_SERVER_URL: ${{ inputs.server-url }}
         INPUT_REPOSITORY: ${{ inputs.repository }}
         INPUT_TOKEN: ${{ inputs.token }}
         INPUT_PATH: ${{ inputs.path }}
-        INPUT_IF_NO_FILES_FOUND: ${{ inputs.if-no-files-found }}
-        INPUT_COMMIT_MESSAGE: ${{ inputs.commit-message }}
+        INPUT_DELETE: ${{ inputs.delete }}

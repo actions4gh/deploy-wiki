@@ -1,0 +1,24 @@
+name: Publish wiki
+on:
+  push:
+    branches: "main"
+    paths:
+      - wiki/**
+      - .github/workflows/publish-wiki.yml
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+jobs:
+  push-wiki:
+    concurrency: wiki-write
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: tj-actions/wiki-link-rewriter@v1
+        with:
+          path: wiki
+      - uses: tj-actions/wiki-publisher@v1
+        with:
+          path: wiki

@@ -1,14 +1,13 @@
-# Upload to GitHub wiki
+# Upload wiki
 
-⬆️ Upload a folder to your GitHub wiki
+📥 Upload your GitHub wiki
 
 <p align=center>
-  <img width=400 src="https://i.imgur.com/yFH4WBP.png">
+  <img width=400 src="https://i.imgur.com/zmGjnFI.png">
 </p>
 
-📂 Keep your dev docs in sync with your code \
-🔁 Able to open PRs with docs updates \
-✨ Use the fancy GitHub wiki reader UI
+🤝 Counterpart to [TBD/download-wiki] \
+🔁 Works great for bidirectional source ↔ wiki sync
 
 ## Usage
 
@@ -22,72 +21,55 @@ name: Publish wiki
 on:
   push:
     branches: "main"
+    paths:
+      - wiki/**
+      - .github/workflows/publish-wiki.yml
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 jobs:
   publish-wiki:
+    concurrency: wiki-write
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: tj-actions/links-strip-ext@v1
+      - uses: actions/checkout@v1
+      - uses: TBD/configure-wiki@v1
         with:
           path: wiki
-      - uses: tj-actions/upload-wiki@v1
+      - uses: TBD/upload-wiki@v1
         with:
           path: wiki
 ```
-
-☝ This workflow will publish the `wiki/` folder from your GitHub repository to
-the `.wiki.git` [Gollum] repository that backs the <kbd>Wiki</kbd> GitHub tab.
-
-<details><summary>If you're after something more advanced, here's an example that pushes <em>across a repository boundary</em>...</summary>
-
-```yml
-on:
-  push:
-    branches: "main"
-jobs:
-  publish-wiki:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: tj-actions/links-strip-ext@v1
-      - uses: tj-actions/upload-wiki@v1
-        with:
-          token: ${{ secrets.MEGA_PROJECT_GITHUB_TOKEN }}
-          repository: octocat/mega-project
-```
-
-ℹ You will need a GitHub access token with permission to write to the target
-repository.
-
-</details>
-
-<img align=right src="https://i.imgur.com/ABKIS4h.png" />
-
-⚠️ You must create a dummy page manually! This is what initially creates the
-backing Gollum Git repository which needs to exist to push to. 🤷‍♀️
-
-💡 Each page has an auto-generated title. It is derived from the filename by
-replacing every `-` (dash) character with a space. Name your files accordingly.
-The `Home.md` file will automatically become the homepage, not `README.md`. This
-is specific to GitHub wikis.
-
-For extra bonus points you can use [tj-actions/download-wiki] and then push the
-contents back to the `wiki/` folder!
-
-</details>
 
 ### Inputs
 
-TODO: Fill this out
+- **`server-url`:** The URL of the server. Usually `https://github.com`, but can
+  be changed if you're using cross-instances. Defaults to the
+  `github.server_url`.
 
-### Outputs
+- **`repository`:** The `user/repo` slug of the repository. Defaults to
+  `github.repository` which is usually what you want. This is the repo from
+  which the `https://github.com/${repo}/wiki` tab will be downloaded from.
 
-- **`wiki_url`:** The HTTP URL that points to the deployed repository's wiki
-  tab. Example: `https://github.com/tj-actions/upload-wiki/wiki`
+- **`token`:** The authentication token. You don't need this unless you're
+  pulling from a different repository that's private and needs a token.
+
+- **`path`:** The specified path. This is where the wiki will be downloaded to.
+  Defaults to `.` which is the current directory. You might want to make this
+  `wiki` or some other subfolder.
+
+- **`delete`:** Whether or not to delete files that are in the destination (the
+  `path` input) but aren't present in the wiki. This is useful for syncing a
+  wiki to a local folder. Default is `true`.
+
+## Outputs
+
+- **`wiki-git-url`:** The URL of the wiki's [Gollum] Git repository. Use this if
+  you need to do anything else with said Git repository. Usually it's something
+  like `https://github.com/user/repo.wiki.git`.
 
 <!-- prettier-ignore-start -->
 [gollum]: https://github.com/gollum/gollum
-[tj-actions/download-wiki]: https://github.com/tj-actions/download-wiki
 <!-- prettier-ignore-end -->

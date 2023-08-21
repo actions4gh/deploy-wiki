@@ -1,26 +1,28 @@
 #!/bin/bash
 set -ex
 
-export GITHUB_TOKEN="$INPUT_TOKEN"
-export GITHUB_SERVER_URL="$INPUT_GITHUB_SERVER_URL"
-export GITHUB_REPOSITORY="$INPUT_REPOSITORY"
-
-export GH_TOKEN=$GITHUB_TOKEN
-export GH_HOST="${GITHUB_SERVER_URL#*//}"
+export GH_TOKEN=$INPUT_TOKEN
+export GH_HOST=${INPUT_SERVER_URL#*//}
 gh auth setup-git
 
 tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
 git config --global --add safe.directory "$tmp_dir"
-git clone "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY.wiki.git" "$tmp_dir"
-rsync -avIh --delete --exclude=.git "$INPUT_PATH/" "$tmp_dir/"
-pushd "$tmp_dir"
 
-git config user.name github-actions[bot]
-git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-echo "$INPUT_IGNORE" >>.git/info/exclude
+wiki_git_url="$INPUT_SERVER_URL/$INPUT_REPOSITORY.wiki.git"
+git clone "$wiki_git_url" "$tmp_dir"
+
+if [[ $INPUT_DELETE == true ]]; then
+  rm -rf "$tmp_dir"/*
+fi
+cp -afv "$INPUT_PATH"/* "$tmp_dir/"
+
+[[ -z $GIT_AUTHOR_NAME ]] && export GIT_AUTHOR_NAME="$GITHUB_ACTOR"
+[[ -z $GIT_AUTHOR_EMAIL ]] && export GIT_AUTHOR_EMAIL="<$GITHUB_ACTOR@users.noreply.github.com>"
+[[ -z $GIT_COMITTER_NAME ]] && export GIT_COMITTER_NAME="github-actions[bot]"
+[[ -z $GIT_COMITTER_EMAIL ]] && export GIT_COMITTER_EMAIL="41898282+github-actions[bot]@users.noreply.github.com"
 git add -Av
-git commit --allow-empty -m "$INPUT_COMMIT_MESSAGE"
+git commit -m 'Apply wiki changes'
 git push -f origin master
 
-echo "wiki_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/wiki" >>"$GITHUB_OUTPUT"
+echo "wiki-git-url=$wiki_git_url" >>$GITHUB_OUTPUT

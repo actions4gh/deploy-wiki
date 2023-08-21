@@ -1,7 +1,7 @@
 name: Update tags
 on:
   release:
-    types: [released]
+    types: released
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true

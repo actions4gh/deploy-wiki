@@ -3,6 +3,7 @@ on:
   push:
     branches: "main"
     paths-ignore:
+      - wiki/**
       - .gitattributes
       - LICENSE
       - README.md
@@ -10,6 +11,7 @@ on:
       - "!.github/workflows/test-action.yml"
   pull_request:
     paths-ignore:
+      - wiki/**
       - .gitattributes
       - LICENSE
       - README.md
@@ -20,12 +22,20 @@ concurrency:
   cancel-in-progress: true
 jobs:
   test-action:
-    concurrency: ${{ github.ref }}-write
+    concurrency: wiki-write
     permissions:
       contents: write
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        delete: [true, false]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./
         with:
           path: test
+          delete: ${{ matrix.delete }}
+      - run: git clone https://github.com/${{ github.repository }}.wiki.git
+      - run: ls -Ah ${{ github.repository }}.wiki
