@@ -9,8 +9,7 @@ tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
 git config --global --add safe.directory "$tmp_dir"
 
-wiki_git_url="$INPUT_SERVER_URL/$INPUT_REPOSITORY.wiki.git"
-git clone "$wiki_git_url" "$tmp_dir"
+git clone "$INPUT_SERVER_URL/$INPUT_REPOSITORY.wiki.git" "$tmp_dir"
 
 if [[ $INPUT_DELETE == true ]]; then
   rm -rf "$tmp_dir"/*
@@ -25,4 +24,4 @@ git add -Av
 git commit -m 'Apply wiki changes'
 git push -f origin master
 
-echo "wiki-git-url=$wiki_git_url" >>$GITHUB_OUTPUT
+echo "sha=$(git rev-parse HEAD)" >>$GITHUB_OUTPUT

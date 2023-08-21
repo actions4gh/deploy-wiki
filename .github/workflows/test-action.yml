@@ -33,9 +33,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
-      - uses: ./
+      - id: main
+        uses: ./
         with:
           path: test
           delete: ${{ matrix.delete }}
-      - run: git clone https://github.com/${{ github.repository }}.wiki.git
-      - run: ls -Ah ${{ github.repository }}.wiki
+      - run: echo "$SHA"
+        env:
+          SHA: ${{ steps.main.outputs.sha }}

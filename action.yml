@@ -18,8 +18,8 @@ inputs:
     default: true
 
 outputs:
-  wiki-git-url:
-    value: ${{ steps.main.outputs.wiki-git-url }}
+  sha:
+    value: ${{ steps.main.outputs.sha }}
 
 runs:
   using: composite
