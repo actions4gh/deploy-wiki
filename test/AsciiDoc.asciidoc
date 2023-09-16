@@ -140,7 +140,7 @@ Do you feel safer with the tiger in a box?
 .Tiger in a box
 image::tiger.png[]
 
-include::_include.adoc[]
+include::_include.asciidoc[]
 
 .Asciidoctor usage example, should contain 3 lines
 [source, ruby]
