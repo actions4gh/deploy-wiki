@@ -20,14 +20,12 @@ concurrency:
   cancel-in-progress: true
 jobs:
   test-action:
-    concurrency: wiki-write
     permissions:
       contents: write
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        delete: [true, false]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -35,7 +33,6 @@ jobs:
         uses: ./
         with:
           path: test
-          delete: ${{ matrix.delete }}
       - run: echo "$OUTPUT_SHA"
         env:
           OUTPUT_SHA: ${{ steps.main.outputs.sha }}
