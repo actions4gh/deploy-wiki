@@ -34,6 +34,6 @@ jobs:
         uses: ./
         with:
           path: test
-      - run: echo "$OUTPUT_SHA"
+      - run: '[[ $OUTPUT_WIKI_URL == https://github.com/actions4gh/deploy-wiki/wiki ]]'
         env:
-          OUTPUT_SHA: ${{ steps.main.outputs.sha }}
+          OUTPUT_WIKI_URL: ${{ steps.main.outputs.wiki-url }}
