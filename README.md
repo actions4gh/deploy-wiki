@@ -3,7 +3,7 @@
 🚀 GitHub Action to publish files to a GitHub wiki for deployments
 
 <p align=center>
-  <img width=400 src="https://i.imgur.com/jgelXnU.png">
+  <img width=600 src="https://i.imgur.com/OrKe4FR.png">
 </p>
 
 ⬆️ Uploads a bunch of files to a repository's wiki \
