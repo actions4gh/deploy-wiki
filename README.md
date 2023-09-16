@@ -1,14 +1,12 @@
-# Upload wiki
+# Deploy GitHub wiki
 
-📥 Upload files to your GitHub wiki
+🚀 GitHub Action to publish files to a GitHub wiki for deployments
 
 <p align=center>
   <img width=400 src="https://i.imgur.com/jgelXnU.png">
 </p>
 
 ⬆️ Uploads a bunch of files to a repository's wiki \
-🔁 Works great for two-way source ↔ wiki sync \
-🤝 Counterpart to [actions4gh/download-wiki] \
 📚 Works great for documentation
 
 ## Usage
