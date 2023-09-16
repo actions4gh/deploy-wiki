@@ -34,6 +34,7 @@ jobs:
         uses: ./
         with:
           path: test
-      - run: '[[ $OUTPUT_WIKI_URL == https://github.com/actions4gh/deploy-wiki/wiki ]]'
+      - shell: bash
+        run: '[[ $OUTPUT_WIKI_URL == https://github.com/actions4gh/deploy-wiki/wiki ]]'
         env:
           OUTPUT_WIKI_URL: ${{ steps.main.outputs.wiki-url }}
