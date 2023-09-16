@@ -22,7 +22,7 @@ on:
   push:
     branches: "main"
     paths:
-      - wiki/**
+      - my-docs/**
 jobs:
   publish-wiki:
     permissions:
