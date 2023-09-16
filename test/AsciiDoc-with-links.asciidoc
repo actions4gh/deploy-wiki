@@ -1,3 +1,7 @@
-<./Lots-of-content.md>
+With file extension
 
-<./Lots-of-content>
+link:./Lots-of-content.md[Lots-of-content.md]
+
+Without file extension
+
+link:./Lots-of-content[Lots-of-content]
