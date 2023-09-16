@@ -17,20 +17,20 @@
 **🚀 Here's what you're after:**
 
 ```yml
-name: Publish wiki
+name: Deploy wiki
 on:
   push:
     branches: "main"
     paths:
       - my-docs/**
 jobs:
-  publish-wiki:
+  deploy-wiki:
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: actions4gh/upload-wiki@v1
+      - uses: actions4gh/deploy-wiki@v1
         with:
           path: my-docs
 ```
@@ -55,7 +55,7 @@ preconfigure your Markdown files for deployment to the GitHub wiki.
 - uses: actions4gh/configure-wiki@v1
   with:
     path: my-docs
-- uses: actions4gh/upload-wiki@v1
+- uses: actions4gh/deploy-wiki@v1
   with:
     path: my-docs
 ```
@@ -70,7 +70,7 @@ of the destination repository. In this example, that's octocat/project. Then you
 can use this action like this:
 
 ```yml
-- uses: actions4gh/upload-wiki@v1
+- uses: actions4gh/deploy-wiki@v1
   with:
     repository: octocat/project
     token: ${{ secrets.MY_TOKEN }}
@@ -88,7 +88,7 @@ push _across_ the GitHub instance boundary, you can use something like this:
 ```yml
 # https://github.com/octocat/wiki => https://github.example.com/octocat/project
 # Triggered by push on https://github.com/octocat/wiki
-- uses: actions4gh/upload-wiki@v1
+- uses: actions4gh/deploy-wiki@v1
   with:
     github-server-url: https://github.example.com
     repository: octocat/project
