@@ -119,4 +119,4 @@ push _across_ the GitHub instance boundary, you can use something like this:
 ## Outputs
 
 - **`wiki-url`:** The URL of the published GitHub wiki hompage. Usually
-  something like https://github.com/octocat/project/wiki.
+  something like `https://github.com/octocat/project/wiki`.
