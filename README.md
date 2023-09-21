@@ -17,7 +17,6 @@
 **🚀 Here's what you're after:**
 
 ```yml
-name: Deploy wiki
 on:
   push:
     branches: "main"
