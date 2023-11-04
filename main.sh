@@ -2,9 +2,12 @@
 set -e
 [[ $RUNNER_DEBUG != 1 ]] || set -x
 
+# Bash can't read env vars with dashes so we need to use printenv.
+github_server_url=$(printenv INPUT_GITHUB-SERVER-URL)
+
 # https://cli.github.com/manual/gh_auth_setup-git
 export GH_TOKEN=$INPUT_TOKEN
-gh auth setup-git -h "${INPUT_GITHUB_SERVER_URL#*//}"
+gh auth setup-git -h "${github_server_url#*//}"
 
 tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
@@ -12,7 +15,7 @@ trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
 # https://weblog.west-wind.com/posts/2023/Jan/05/Fix-that-damn-Git-Unsafe-Repository
 git config --global --add safe.directory "$tmp_dir"
 
-git clone "$INPUT_GITHUB_SERVER_URL/$INPUT_REPOSITORY.wiki.git" "$tmp_dir" --depth 1
+git clone "$github_server_url/$INPUT_REPOSITORY.wiki.git" "$tmp_dir" --depth 1
 
 # Hidden files (like .myfile.txt, .git/, or .gitignore) are NOT copied.
 # The magic "${var:?}" makes it error if the var is zero-length/null.
@@ -29,4 +32,4 @@ git commit --allow-empty -m 'Deploy wiki'
 
 git push origin master
 
-echo "wiki-url=$INPUT_GITHUB_SERVER_URL/$INPUT_REPOSITORY/wiki" >> "$GITHUB_OUTPUT"
+echo "wiki-url=$github_server_url/$INPUT_REPOSITORY/wiki" >> "$GITHUB_OUTPUT"
