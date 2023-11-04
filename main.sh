@@ -6,7 +6,6 @@ set -e
 export GH_TOKEN=$INPUT_TOKEN
 gh auth setup-git -h "${INPUT_GITHUB_SERVER_URL#*//}"
 
-# https://betterdev.blog/minimal-safe-bash-script-template/
 tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
 
