@@ -1,5 +1,5 @@
 name: Deploy GitHub wiki
-description: 🚀 GitHub Action to publish files to a GitHub wiki
+description: 📖 GitHub Action to publish files to a GitHub wiki
 
 branding:
   icon: upload-cloud
