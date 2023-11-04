@@ -28,8 +28,7 @@ wiki/
 ⬆️ Uploads a bunch of files to a repository's wiki \
 📚 Works great for documentation \
 🔀 Allows contributors to open Pull Requests for wiki content \
-🤝 Works well with [actions4gh/configure-wiki] to fix links \
-🔳 Inverse of [actions4gh/download-wiki]
+🤝 Works well with [actions4gh/configure-wiki] to fix links
 
 ## Usage
 
@@ -82,7 +81,7 @@ repository.
 
 ### Outputs
 
-- **`wiki-url`:** The URL of the published GitHub wiki hompage. Usually
+- **`wiki-url`:** The URL of the published GitHub wiki homepage. Usually
   something like `https://github.com/octocat/project/wiki`.
 
 ### Bidirectional wiki sync
@@ -90,8 +89,8 @@ repository.
 Sometimes you want two-way wiki sync so that edits from the repository are
 reflected in the wiki and edits from the wiki are committed to the repository.
 You've seen above how to go from the source repository to the wiki tab. Here's a
-complete demo using [actions4gh/download-wiki] to perform the reverse of
-downloading the wiki content and commiting it to the source repository.
+complete demo using [actions/checkout] to download the wiki [Gollum] repository,
+perform the un-wiki-ification of the links, and commit it to the source repository.
 
 ```yml
 # .github/workflows/sync-wiki.yml
@@ -120,16 +119,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: rm -rf wiki
-      - uses: actions4gh/download-wiki@v1
+      - uses: actions/checkout@v4
         with:
+          repository: ${{ github.repository }}.wiki
           path: wiki
+      - run: rm -rf wiki/.git
       - uses: actions4gh/configure-wiki/reverse@v1
       - uses: stefanzweifel/git-auto-commit-action@v5
 ```
-
-Check out the [actions4gh/download-wiki] action to learn more about what inputs
-are available and learn more about using it.
 
 ### Pushing to another repository's wiki
 
@@ -147,4 +144,3 @@ can use this action like this:
 
 [actions/configure-pages]: https://github.com/actions/configure-pages
 [actions4gh/configure-wiki]: https://github.com/actions/configure-wiki
-[actions4gh/download-wiki]: https://github.com/actions/download-wiki
