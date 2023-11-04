@@ -9,7 +9,8 @@
 ⬆️ Uploads a bunch of files to a repository's wiki \
 📚 Works great for documentation \
 🔀 Allows contributors to open Pull Requests for wiki content \
-🤝 Complimented by [actions4gh/configure-wiki]
+🤝 Works well with [actions4gh/configure-wiki] to fix links \
+🔳 Inverse of [actions4gh/download-wiki]
 
 ## Usage
 
