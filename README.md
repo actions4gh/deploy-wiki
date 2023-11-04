@@ -1,6 +1,6 @@
 # Deploy GitHub wiki
 
-🚀 GitHub Action to publish files to a GitHub wiki
+📖 GitHub Action to publish files to a GitHub wiki
 
 <table align=center><td>
 
