@@ -2,9 +2,28 @@
 
 🚀 GitHub Action to publish files to a GitHub wiki
 
-<p align=center>
-  <img width=500 src="https://i.imgur.com/OrKe4FR.png">
-</p>
+<table align=center><td>
+
+```sh
+# Uploaded to wiki tab 👉
+wiki/
+├── AsciiDoc-with-links.asciidoc
+├── AsciiDoc.asciidoc
+├── Home.md
+├── Lots-of-content.md
+├── Lots-of-links.md
+├── Page-that-is-not-visible.adoc
+├── Page-with-dashes.md
+├── Page-with-image.md
+├── Page_with_underscores.md
+├── Plain-text.txt
+├── _include.asciidoc
+└── tiger.png
+```
+
+<td>
+<img height=360 src="https://i.imgur.com/b0TGkSU.png">
+</table>
 
 ⬆️ Uploads a bunch of files to a repository's wiki \
 📚 Works great for documentation \
