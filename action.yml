@@ -37,7 +37,7 @@ inputs:
 outputs:
   wiki-url:
     description:
-      The URL of the published GitHub wiki hompage. Usually something like
+      The URL of the published GitHub wiki homepage. Usually something like
       https://github.com/octocat/project/wiki.
     value: ${{ steps.main.outputs.wiki-url }}
 
