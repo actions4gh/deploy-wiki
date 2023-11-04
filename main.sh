@@ -2,6 +2,7 @@
 set -e
 [[ $RUNNER_DEBUG != 1 ]] || set -x
 
+# Bash can't read env vars with dashes so we need to use printenv.
 github_server_url=$(printenv INPUT_GITHUB-SERVER-URL)
 
 # https://cli.github.com/manual/gh_auth_setup-git
