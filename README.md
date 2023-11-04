@@ -36,7 +36,9 @@ jobs:
       - uses: actions4gh/deploy-wiki@v1
 ```
 
-👆 This GitHub workflow will deploy the wiki content from `wiki/` (can be changed with the `path` input) to the GitHub wiki tab for the current repository.
+👆 This GitHub workflow will deploy the wiki content from `wiki/` (can be
+changed with the `path` input) to the GitHub wiki tab for the current
+repository.
 
 ### Inputs
 
@@ -65,8 +67,11 @@ jobs:
 
 ### Bidirectional wiki sync
 
-Sometimes you want two-way wiki sync so that edits from the repository are reflected
-in the wiki and edits from the wiki are committed to the repository. You've seen above how to go from the source repository to the wiki tab. Here's a complete demo using [actions4gh/download-wiki] to perform the reverse of downloading the wiki content and commiting it to the source repository.
+Sometimes you want two-way wiki sync so that edits from the repository are
+reflected in the wiki and edits from the wiki are committed to the repository.
+You've seen above how to go from the source repository to the wiki tab. Here's a
+complete demo using [actions4gh/download-wiki] to perform the reverse of
+downloading the wiki content and commiting it to the source repository.
 
 ```yml
 # .github/workflows/sync-wiki.yml
