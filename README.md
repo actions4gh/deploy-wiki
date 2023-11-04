@@ -112,7 +112,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions4gh/configure-wiki@v1
       - uses: actions4gh/deploy-wiki@v1
-  download-wiki:
+  commit-wiki:
     if: github.event_name != 'push'
     permissions:
       contents: write
