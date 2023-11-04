@@ -1,5 +1,6 @@
 #!/bin/bash
-set -ex
+set -e
+[[ $RUNNER_DEBUG == true ]] && set -x || true
 
 # https://cli.github.com/manual/gh_auth_setup-git
 export GH_TOKEN=$INPUT_TOKEN
