@@ -29,12 +29,14 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      # - uses: actions4gh/configure-wiki@v1
       - id: main
         uses: ./
         with:
           path: test
       - shell: bash
-        run: '[[ $OUTPUT_WIKI_URL == ${{ github.server_url }}/${{ github.repository }}/wiki ]]'
+        run: "[[ $ACTUAL == $EXPECTED ]]"
         env:
-          OUTPUT_WIKI_URL: ${{ steps.main.outputs.wiki-url }}
+          ACTUAL: ${{ steps.main.outputs.wiki-url }}
+          EXPECTED: ${{ github.server_url }}/${{ github.repository }}/wiki

@@ -12,7 +12,8 @@ inputs:
       will use environment defaults to fetch from the same instance that the
       workflow is running from unless specified. Example URLs are
       https://github.com or https://my-ghes-server.example.com. The default is
-      github.server_url.
+      github.server_url. It's unlikely you need to change this unless you are
+      deploying across a GHES boundary.
     default: ${{ github.server_url }}
   repository:
     description:

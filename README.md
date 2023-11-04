@@ -3,11 +3,13 @@
 🚀 GitHub Action to publish files to a GitHub wiki for deployments
 
 <p align=center>
-  <img width=600 src="https://i.imgur.com/OrKe4FR.png">
+  <img width=500 src="https://i.imgur.com/OrKe4FR.png">
 </p>
 
 ⬆️ Uploads a bunch of files to a repository's wiki \
-📚 Works great for documentation
+📚 Works great for documentation \
+🔀 Allows contributors to open Pull Requests for wiki content \
+🤝 Complimented by [actions4gh/configure-wiki]
 
 ## Usage
 
@@ -17,51 +19,94 @@
 **🚀 Here's what you're after:**
 
 ```yml
+# .github/workflows/deploy-wiki.yml
+name: deploy-wiki
 on:
   push:
     branches: "main"
-    paths:
-      - my-docs/**
+    paths: wiki/**
 jobs:
   deploy-wiki:
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+      - uses: actions4gh/configure-wiki@v1
       - uses: actions4gh/deploy-wiki@v1
-        with:
-          path: my-docs
 ```
 
-This GitHub Action deploys the content found in the specified `path` (`wiki/` by
-default) to the GitHub wiki.
+👆 This GitHub workflow will deploy the wiki content from `wiki/` (can be changed with the `path` input) to the GitHub wiki tab for the current repository.
 
-<details><summary>Fix wiki links</summary>
+### Inputs
 
-By default this Action doesn't do any editing of your wiki content. This can be
-seen with links like `./My-page.md` which will work in the normal GitHub source
-code viewer but not on the deployed wiki. Why? Because source code links use the
-complete file name including the extension and wiki links strip the extension.
-To get the link to work on the wiki page you'd need to use `./My-page` with no
-`.md` extension.
+- **`github-server-url`:** The base URL for the GitHub instance that you are
+  trying to clone from, will use environment defaults to fetch from the same
+  instance that the workflow is running from unless specified. Example URLs are
+  `https://github.com` or `https://my-ghes-server.example.com`. The default is
+  `github.server_url`. It's unlikely you need to change this unless you are
+  deploying _across_ a GHES boundary.
 
-Similar to the [actions/configure-pages] action, there's an
-[actions4gh/configure-wiki] action to edit your workspace just a bit and
-preconfigure your Markdown files for deployment to the GitHub wiki.
+- **`repository`:** The repository slug to use as the base project target of the
+  wiki. The contents will be deployed to this repository's wiki tab, not the
+  repository itself. Use this if you are pushing contents across the repository
+  boundary. Defaults to the current repository from `github.repository`.
+
+- **`token`:** Set this if you are pushing to a different repository. This token
+  will need write permissions. The default is `github.token`.
+
+- **`path`:** Path of the directory containing the wiki files to be deployed.
+  Defaults to the `wiki/` folder.
+
+### Outputs
+
+- **`wiki-url`:** The URL of the published GitHub wiki hompage. Usually
+  something like `https://github.com/octocat/project/wiki`.
+
+### Bidirectional wiki sync
+
+Sometimes you want two-way wiki sync so that edits from the repository are reflected
+in the wiki and edits from the wiki are committed to the repository. You've seen above how to go from the source repository to the wiki tab. Here's a complete demo using [actions4gh/download-wiki] to perform the reverse of downloading the wiki content and commiting it to the source repository.
 
 ```yml
-- uses: actions4gh/configure-wiki@v1
-  with:
-    path: my-docs
-- uses: actions4gh/deploy-wiki@v1
-  with:
-    path: my-docs
+# .github/workflows/sync-wiki.yml
+name: Sync wiki
+on:
+  push:
+    branches: "main"
+    paths: wiki/**
+  gollum:
+  schedule:
+    - cron: "8 14 * * *"
+jobs:
+  deploy-wiki:
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions4gh/configure-wiki@v1
+      - uses: actions4gh/deploy-wiki@v1
+  checkout-wiki:
+    if: github.event_name != 'push'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: rm -rf wiki
+      - uses: actions4gh/download-wiki@v1
+        with:
+          path: wiki
+      - uses: actions4gh/configure-wiki/reverse@v1
+      - uses: stefanzweifel/git-auto-commit-action@v5
 ```
 
-</details>
+Check out the [actions4gh/download-wiki] action to learn more about what inputs
+are available and learn more about using it.
 
-<details><summary>Pushing to another repository's wiki</summary>
+### Pushing to another repository's wiki
 
 If you want to push the contents of octocat/wiki to octocat/project, then you'll
 first need a GitHub Personal Access Token with permission to write the contents
@@ -75,47 +120,6 @@ can use this action like this:
     token: ${{ secrets.MY_TOKEN }}
 ```
 
-</details>
-
-<details><summary>Using with GitHub Enterprise</summary>
-
-This action automatically makes use of `github.server_url` which is set to your
-`https://github.example.com` GitHub server origin. You should still be able to
-use the normal GitHub workflow 👆 shown above without any edits. If you want to
-push _across_ the GitHub instance boundary, you can use something like this:
-
-```yml
-# https://github.com/octocat/wiki => https://github.example.com/octocat/project
-# Triggered by push on https://github.com/octocat/wiki
-- uses: actions4gh/deploy-wiki@v1
-  with:
-    github-server-url: https://github.example.com
-    repository: octocat/project
-    token: ${{ secrets.MY_TOKEN }}
-```
-
-</details>
-
-### Inputs
-
-- **`github-server-url`:** The base URL for the GitHub instance that you are
-  trying to clone from, will use environment defaults to fetch from the same
-  instance that the workflow is running from unless specified. Example URLs are
-  `https://github.com` or `https://my-ghes-server.example.com`. The default is
-  `github.server_url`.
-
-- **`repository`:** The repository slug to use as the base project target of the
-  wiki. The contents will be deployed to this repository's wiki tab, not the
-  repository itself. Use this if you are pushing contents across the repository
-  boundary. Defaults to the current repository from `github.repository`.
-
-- **`token`:** Set this if you are pushing to a different repository. This token
-  will need write permissions. The default is `github.token`.
-
-- **`path`:** Path of the directory containing the wiki files to be deployed.
-  Defaults to the `wiki/` folder.
-
-## Outputs
-
-- **`wiki-url`:** The URL of the published GitHub wiki hompage. Usually
-  something like `https://github.com/octocat/project/wiki`.
+[actions/configure-pages]: https://github.com/actions/configure-pages
+[actions4gh/configure-wiki]: https://github.com/actions/configure-wiki
+[actions4gh/download-wiki]: https://github.com/actions/download-wiki
