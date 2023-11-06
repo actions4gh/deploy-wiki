@@ -142,5 +142,6 @@ can use this action like this:
     token: ${{ secrets.MY_TOKEN }}
 ```
 
-[actions/configure-pages]: https://github.com/actions/configure-pages
 [actions4gh/configure-wiki]: https://github.com/actions/configure-wiki
+[actions/checkout]: https://github.com/actions/checkout
+[gollum]: https://github.com/gollum/gollum
