@@ -17,7 +17,6 @@ wiki/
 ├── Page-with-image.md
 ├── Page_with_underscores.md
 ├── Plain-text.txt
-├── _include.asciidoc
 └── tiger.png
 ```
 
