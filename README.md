@@ -124,7 +124,7 @@ jobs:
           path: wiki
       - run: rm -rf wiki/.git
       - uses: actions4gh/configure-wiki/reverse@v1
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: actions4git/add-commit-push@v1
 ```
 
 ### Pushing to another repository's wiki
