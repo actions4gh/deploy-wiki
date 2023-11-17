@@ -1,7 +1,11 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
-import { join, dirname } from "node:path";
-const file = join(dirname(process.argv[1]), "main.sh"); // 👈 CHANGE ME!
+import { fileURLToPath } from "node:url";
+const file = fileURLToPath(import.meta.resolve("./main.sh")); // 👈 CHANGE ME!
 const subprocess = spawn("bash", [file], { stdio: "inherit" });
-await once(subprocess, "spawn");
-subprocess.on("exit", (x) => process.exit(x));
+const [exitCode, signal] = await once(subprocess, "exit");
+if (signal) {
+  process.kill(process.pid, signal);
+} else {
+  process.exit(exitCode);
+}
