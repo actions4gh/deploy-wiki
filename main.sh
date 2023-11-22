@@ -13,7 +13,7 @@ git config --global --add safe.directory "$tmp_dir"
 
 protocol=$(echo "$github_server_url" | cut -d/ -f3)
 host=$(echo "$github_server_url" | cut -d/ -f3)
-git clone "$scheme//x:$INPUT_TOKEN@$host/$GITHUB_REPOSITORY.wiki.git" "$tmp_dir" --depth 1
+git clone "$protocol//x:$INPUT_TOKEN@$host/$GITHUB_REPOSITORY.wiki.git" "$tmp_dir" --depth 1
 
 # Hidden files (like .myfile.txt, .git/, or .gitignore) are NOT copied.
 # The magic "${var:?}" makes it error if the var is zero-length/null.
