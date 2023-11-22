@@ -11,7 +11,7 @@ trap 'rm -rf "$tmp_dir"' SIGINT SIGTERM ERR EXIT
 # https://weblog.west-wind.com/posts/2023/Jan/05/Fix-that-damn-Git-Unsafe-Repository
 git config --global --add safe.directory "$tmp_dir"
 
-protocol=$(echo "$github_server_url" | cut -d/ -f3)
+protocol=$(echo "$github_server_url" | cut -d/ -f1)
 host=$(echo "$github_server_url" | cut -d/ -f3)
 git clone "$protocol//x:$INPUT_TOKEN@$host/$GITHUB_REPOSITORY.wiki.git" "$tmp_dir" --depth 1
 
